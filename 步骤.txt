@@ -1,0 +1,38 @@
+debug类的使用
+
+１.设定安全级别
+
+２.出错的行数，文件，出错message
+
+3.执行了哪些sql语句
+
+
+
+数据库驱动类
+
+db.class.php应该做哪些事情
+
+1.数据库的连接
+
+
+insert , del , update ,select
+
+where orwhere in  like limit order by  group by having  join  distinct(数据库中取出重复记录很少，所以这个基本不用)
+
+
+totle field   begin transaction   commit rollback 
+
+3中数据库驱动程序
+
+数据库缓存如何做
+
+
+
+
+
+
+
+
+
+
+
