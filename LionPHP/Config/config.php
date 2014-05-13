@@ -20,3 +20,5 @@ return array(
 	'DEBUG'					=>	TRUE,//debug模式开关
 
 	);
+
+//这里居然可以在线编辑呀
