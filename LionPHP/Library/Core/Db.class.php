@@ -9,9 +9,9 @@
 // | Db.class.php 数据库基础类，定义了sql的基本操作
 // +----------------------------------------------------------------------
 
-class Db{
+abstract class Db{
 	//sql数组
-	protected $sql = array('where','in','like','limit','order','group','join','union','distinct','having');
+	protected $sqls = array('where','in','like','limit','order','group','field','join','union','distinct','having');
 	//where条件
 	protected $where = '';
 	//sql字符串
@@ -127,5 +127,46 @@ class Db{
 		$this->sqlstr .= 'order by'.$args[0].' '.$args[1];
 		return $this;
 	}
+
+	//getAll  getOne field select  insert  update delete query 事物开始  事物提交  事件回滚
+	/**
+	 * 字段
+	 * @return $this
+	 */
+	public function field()
+	{
+		$this->sqlstr .= $this->sqls['field'];
+		return $this;
+	}
+
+	/**
+	 * 组合select语句
+	 * @return records
+	 */
+	public function select()
+	{	
+		//组合select语句
+		$sql = 'select '.$this->sqlstr;
+		//利用query方法执行一条sql语句，返回结果都用数组
+		return $this->query($sql);
+	}
+	/**
+	 * 组合insert语句
+	 * @return 成功则返回插入的ID，错误返回false
+	 */
+	public function insert($data)
+	{
+		//组合insert语句
+		$sql = 'insert into '.$this->sqlstr;
+		//利用query方法插入记录
+		return $this->query($sql);
+	}
+
+	public function update()
+	{
+
+	}
+
+
 
 }

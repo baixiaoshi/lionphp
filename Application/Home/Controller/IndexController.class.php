@@ -11,13 +11,4 @@ class IndexController extends Controller{
 		echo implode(',', $arr);
 	}
 
-	public function __call($methodName,$args)
-	{
-		if($methodName == 'hello')
-		{
-			dump($args);
-		}
-	}
-
-
 }
