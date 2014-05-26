@@ -16,6 +16,8 @@ abstract class Db{
 	protected $where = '';
 	//sql字符串
 	protected $sqlstr = '';
+	//dbname
+	public $tbname = '';
 
 	/**
 	 * 实现链式操作,where,orwhere,in,like,limit,order by,group by,join,union,distinct,having
@@ -33,6 +35,12 @@ abstract class Db{
 		}
 		//返回$this ，完成链式操作
 		return $this;
+	}
+
+	public function __get($provars)
+	{	//允许调用表名
+		if($provars == 'tbname')
+			return $this->tbname;
 	}
 	/**
 	 * 组合所有的where条件
@@ -161,10 +169,39 @@ abstract class Db{
 		//利用query方法插入记录
 		return $this->query($sql);
 	}
+	/**
+	 * 更新数据库数据，只传递数组类型数据
+	 */
 
-	public function update()
+	public function update($data)
 	{
-
+		if(!is_array($data))
+		{
+			Debug::addMsg('update的参数不是一个数组!');
+			return;
+		}
+		$sql = 'update '.$this->tbname.' set ';
+		foreach($data as $k=>$v)
+		{
+			$sql .= $k.'='.$v.',';
+		}
+		$sql = substr($sql,-1);
+		$this->sqlstr .=$sql;
+		return $this->query($this->sqlstr);
+	}
+	/**
+	 * 删除记录
+	 * delete(3), delete('id=3'),array('id'=>3,'username'=>'xiaobai',true);
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
+	public function delete($data)
+	{
+		$sql = 'delete from '.$this->tbname.'where ';
+		foreach($data as $k=>$v)
+		{
+			$sql .= $k.'='.$v
+		}
 	}
 
 
