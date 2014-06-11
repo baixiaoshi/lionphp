@@ -27,7 +27,7 @@ totle field   begin transaction   commit rollback
 数据库缓存如何做
 
 
-
+这里测试一下是否把所有的东西都克隆下来了
 
 
 
