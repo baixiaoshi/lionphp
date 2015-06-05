@@ -33,6 +33,7 @@ define('RUNTIME_PATH',ROOT_PATH.'Application/Runtime/');
 define('APP_COMMON_PATH',APP_PATH.'Common/');
 //加载通用函数
 require_once LION_COMMON_PATH.'functions.php';
+require_once LION_PATH.'/helper/function_helper.php' ;
 //加载框架本身配置文件
 $config = require_once LION_CONFIG_PATH.'config.php';
 foreach($config as $key=>$val){

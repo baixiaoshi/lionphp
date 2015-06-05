@@ -2,6 +2,23 @@
 
 
 
+
+
+
+#去除换行符可以使用如下的方法
+
+function filter_enter($str)
+{
+    if($str == '') return $str ;
+    #这里特别做一个说明，如果数组中的\r\n用单引号是不会生效的
+    #这就是之所以我在这里记录下的原因
+    str_replace(array("\r\n","\r","\n"),'',$str) ;
+    #使用php换行符常亮
+    str_replace(PHP_EOL,'',$str) ;
+    #使用正则
+    preg_replace('/\s*/','',$str) ;
+}
+
 /**
  * 获得当前的域名
  *
@@ -231,7 +248,7 @@ function html_filter($html)
 		}
 		return $return ;
 	}
-}
+
 
 
 #打印数组
