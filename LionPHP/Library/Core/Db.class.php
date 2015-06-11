@@ -9,15 +9,10 @@
 // | Db.class.php 数据库基础类，定义了sql的基本操作
 // +----------------------------------------------------------------------
 
-abstract class Db{
+
+class Db{
 	//sql数组
-	protected $sqls = array('where','in','like','limit','order','group','field','join','union','distinct','having');
-	//where条件
-	protected $where = '';
-	//sql字符串
-	protected $sqlstr = '';
-	//dbname
-	public $tbname = '';
+	protected $sql = array('where','in','like','limit','order','group','join','union','distinct','having');
 
 	/**
 	 * 实现链式操作,where,orwhere,in,like,limit,order by,group by,join,union,distinct,having
@@ -31,38 +26,34 @@ abstract class Db{
 		{
 			$this->sqls[$methodName] = $args;
 		}else{
-			Debug::addMsg("类".get_class($this)."方法".$methodName."不存在或者参数为空!",2);
+
+			Debug::addMsg("类".get_class($this)."方法".$methodName."不存在或者参数为空!");
+
 		}
 		//返回$this ，完成链式操作
 		return $this;
 	}
 
-	public function __get($provars)
-	{	//允许调用表名
-		if($provars == 'tbname')
-			return $this->tbname;
-	}
-	/**
-	 * 组合所有的where条件
-	 * @return String
-	 */
-	public function combine_Where()
+	public function combineWhere()
 	{	//组合where条件的字符串
-		$this->where = '';
+		$where = '';
+
 		//组合where方法
 		if(!empty($this->sqls['where']))
 		{	//where条件的参数
 			$args[0] = $this->sqls['where'][0];
 			//and,或者or的标识，默认为and
 			$args[1] = !empty($this->sqls['where'][1]) ? trim($this->sqls['where'][1]) : 'and';
-			$this->where .= 'where ';
+
+			$where .= 'where ';
 			foreach($args[0] as $k=>$v)
 			{	//区别字段是数字还是字符串
 				$v = is_numeric($v) ? $v : "'.$v.'";
-				$this->where .= $k."=".$v;
+				$where .= $k."=".$v;
 				if(!end($this->sqls['where']) == $v)
 				{
-					$this->where .= $args[1];
+					$where .= $args[1];
+
 				}
 			}
 		}
@@ -72,17 +63,19 @@ abstract class Db{
 		{	
 			if(is_array($this->sqls['in']))
 			{	
-				$this->where .= implode(',', $this->sqls['in']);	
-			}
-			else
-			{
-				$this->where .= strval($this->sqls['in']);
+
+				$where .= implode(',', $this->sqls['in']);
+				
+			}else{
+				$where .= strval($this->sqls['in']);
+
 			}
 		}
 		//组合like方法，参数可以使字符串或者数组
 		if(!empty($this->sqls['like']))
 		{	//获取like传递的参数
 			$args[0] = $this->sqls['like'][0];
+
 			//是and或者or的标识，默认为and
 			$args[1] = isset($this->sqls['like'][1]) ? trim($this->sqls['like'][1]) : 'and';
 			//如果传递的第一个参数是数组

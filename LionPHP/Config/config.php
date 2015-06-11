@@ -19,4 +19,5 @@ return array(
 	'TPL_SUFFIX'			=>	'.html',
 	'DEBUG'					=>	TRUE,//debug模式开关
 
+
 	);

@@ -1,15 +1,36 @@
-数据库类的设计db.class.php
+﻿
+debug类的使用
 
-准备使用mysql，mysqli，pdo方式来操作数据库
+１.设定安全级别
 
-条件的语句
-where,limit, order by, having, group by ,in,distinct
+２.出错的行数，文件，出错message
 
-先练习mysqli怎样操作数据库
-
-
+3.执行了哪些sql语句
 
 
+
+数据库驱动类
+
+db.class.php应该做哪些事情
+
+1.数据库的连接
+
+
+insert , del , update ,select
+
+where orwhere in  like limit order by  group by having  join  distinct(数据库中取出重复记录很少，所以这个基本不用)
+
+
+totle field   begin transaction   commit rollback 
+
+3中数据库驱动程序
+
+数据库缓存如何做
+
+
+这里测试一下是否把所有的东西都克隆下来了
+
+测试一下pull命令是否可以网上传东西
 
 
 
