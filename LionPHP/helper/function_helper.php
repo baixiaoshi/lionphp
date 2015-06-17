@@ -2,6 +2,111 @@
 
 
 
+/**
+ * 下载excel报表
+ * @param  array  $data       数组
+ * @param  array  $field       字段名称
+ * @param  array  $field_words 字段
+ * @param  [type] $filename    输出excel名称
+ * @return [type]              直接传入这些参数即可下载
+ */
+function download_excel($data=array(),$field=array(),$field_words=array(),$filename)
+{	
+	//error_reporting(E_ALL);
+	//ini_set('display_errors', TRUE);
+	//ini_set('display_startup_errors', TRUE);
+	$word = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+	include APPPATH.'libraries/PHPExcel.php';
+
+	include APPPATH.'libraries/PHPExcel/Writer/Excel2007.php';
+
+	$objPHPExcel = new PHPExcel();
+
+	$objPHPExcel->getProperties()->setCreator("Maarten Balliauw")
+								 ->setLastModifiedBy("Maarten Balliauw")
+								 ->setTitle("Office 2007 XLSX Test Document")
+								 ->setSubject("Office 2007 XLSX Test Document")
+								 ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+								 ->setKeywords("office 2007 openxml php")
+								 ->setCategory("Test result file");
+	if(count($field) >26) return '字段超过26个字母了,请增加字母';
+
+	//设置表头
+	for($i=0,$len=count($field);$i<$len;$i++)
+	{
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue($word[$i].'1',$field[$i]);
+	}
+
+	$i=2;
+	foreach($data as $k=>$v)
+	{
+		for($j=0,$len=count($field);$j<$len;$j++)
+		{	
+			$index = $field_words[$j];
+			if(isset($v[$index]))
+			{
+				$objPHPExcel->setActiveSheetIndex(0)
+		           ->setCellValue($word[$j].$i,$v[$index]);
+			}
+		 	
+	 	}
+	 	$i++;
+	}
+
+	$objPHPExcel->getActiveSheet()->setTitle('Simple');
+	$objPHPExcel->setActiveSheetIndex(0);
+
+	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+	header('Content-Disposition: attachment;filename='.$filename);
+	header('Cache-Control: max-age=0');
+	header('Cache-Control: max-age=1');
+
+	header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); 
+	header ('Cache-Control: cache, must-revalidate');
+	header ('Pragma: public');
+
+	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+	$rst = $objWriter->save('php://output');
+
+}
+
+
+
+
+
+
+
+#导出类excel,csv格式,简单的导出可以使用这个函数，简单高效
+function download_excel($ret,$field_words,$field)
+{
+	header( "Content-type:application/vnd.ms-excel" ) ;
+	header( "Content-disposition:attachment;filename=download.xls" ) ;
+	//$field_words = array('flowid','username','merchant_id','merchant_name','platform_id','platform_name','gameid','project_name','is_seal','statmonth','pay','settlement','financer','finance_time','status') ;
+	//$field = array('流程单号','业务提交人','客商ID','可算名称','平台ID','平台名称','项目ID','项目名称','是否盖章','结算月份','充值','结算金额','财务审核人','财务审核日期','状态') ;
+	//dump($field_words) ;
+	//dump($field) ;
+	foreach($field_words as $key =>$field_key)
+	{
+		$field_name = iconv('utf-8','gbk',$field_key) ;
+		echo $field_name.chr(9) ;
+	}
+
+
+	echo chr(13) ;
+	if(is_array($ret) && $ret)
+		foreach($ret as $key =>$val)
+		{
+			foreach($field as $key2 =>$f)
+			{
+				$value = isset($val[$f])?iconv('utf-8','gbk',$val[$f]) : '--' ;
+				echo $value.chr(9) ;
+			}
+			echo chr(13) ;
+		}
+	return true ;
+}
 
 
 
