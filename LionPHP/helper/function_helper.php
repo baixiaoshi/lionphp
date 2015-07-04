@@ -2,6 +2,8 @@
 
 
 
+function test()
+{}
 /**
  * 下载excel报表
  * @param  array  $data       数组
