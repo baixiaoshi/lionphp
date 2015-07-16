@@ -1,6 +1,61 @@
 <?php
 
 
+//通用的数组排序
+function do_sort($arr,$field,$order='desc')
+{
+    if(!is_array($arr) || !$arr || $field=='')
+        return $arr ;
+    $index_arr = array() ;
+    foreach($arr as $k=>$v)
+        if(isset($v[$field]))
+            array_push($index_arr,$v[$field]) ;
+    ($order == 'desc') ? rsort($index_arr) : sort($index_arr) ;
+    $ret = array() ;
+   foreach($index_arr as $index)
+        foreach($arr as $k=>$v)
+            if($v[$field] == $index)
+                $ret[$k] = $v ;
+   return $ret ;
+}
+
+/**
+ * 获取目录树
+ * 1. 将目录树结果集取出来
+ * 2. 将数组变成自增ID作为键值的数组
+ * 3. 传入到函数中
+ * 4. 出来后对其中的path字段进行排序操作就可以了
+ * 5. 可以按照目录树进行操作
+ * @param  [type]  $arr    [description]
+ * @param  integer $parent [description]
+ * @param  integer $level  [description]
+ * @return [type]          [description]
+ */
+public function get_dir_tree($arr,$parent=0,$level=0)
+{   
+    if(!is_array($arr) || !$arr)
+        return $arr ;
+        $level++ ;
+    foreach($arr as $k=>$v)
+    {   
+        if($v['parent_id'] == $parent)
+        {
+            if($parent == 0)
+                $arr[$k]['path'] = '0-'.$v['id'] ;
+            else
+                $arr[$k]['path'] = $arr[$v['parent_id']]['path'].'-'.$v['id'] ;
+            $arr[$k]['level'] = $level ;
+            $count = 0 ;
+            foreach($arr as $k2=>$v2)
+                if($v2['parent_id'] == $parent)
+                    $count ++ ;
+
+            if($count)
+                $arr = self::get_dir_tree($arr,$v['id'],$level) ;
+        }
+    }
+    return $arr;
+}
 
 /**
  * 下载excel报表
