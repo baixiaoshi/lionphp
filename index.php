@@ -14,3 +14,4 @@ if(version_compare(PHP_VERSION,'5.3.0','<')) die('PHP版本要求大于5.3.0');
 define('APP_PATH',__DIR__.'/Application/Home/');
 //引入框架入口文件
 require_once './LionPHP/LionPHP.php';
+echo "hello world";

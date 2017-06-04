@@ -102,6 +102,6 @@ if(DEBUG == TRUE){
 	Debug::outputMessage();
 }
 
-
+echo "hello world";
 
 
